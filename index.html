@@ -3,125 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>【你的貼圖名稱】Official Store - AI原創設計</title>
+    <title>GenSticker - AI 原創貼圖作品集</title>
     <style>
-        /* --- 基礎設定 --- */
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 0; color: #333; line-height: 1.6; }
-        a { text-decoration: none; color: inherit; }
+        /* --- 全局設定 --- */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; padding-top: 55px; background-color: #FAFAFA; color: #333; }
+        a { text-decoration: none; }
         
-        /* --- 導航列 --- */
-        header { background-color: #fff; padding: 20px 5%; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: #00B900; /* LINE Green */ }
-        nav a { margin-left: 20px; font-weight: 500; }
+        /* --- 導航 --- */
+        nav { background: #333; color: #fff; padding: 0.7rem 2%; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 999; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { font-size: 1.3rem; font-weight: bold; color: #FF9800; margin-left: 10px; }
+        .ig-icon { display: inline-flex; align-items: center; gap: 6px; color: #fff; font-weight: bold; transition: 0.3s; font-size: 0.95rem; }
+        .ig-icon:hover { color: #FF9800; }
+        .ig-icon svg { width: 20px; height: 20px; fill: currentColor; transition: 0.3s; }
+        
+        /* --- Hero 區塊 --- */
+        .hero { background: #222; color: #fff; padding: 80px 20px; text-align: center; }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
+        .hero p { font-size: 1.2rem; color: #aaa; margin-bottom: 30px; }
+        
+        /* --- 貼圖展示區 (重點修改) --- */
+        .sticker-section { padding: 60px 10%; }
+        .sticker-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 50px; display: flex; flex-wrap: wrap; align-items: center; }
+        
+        /* 左邊放圖，右邊放字 */
+        .card-image { flex: 1; min-width: 300px; height: 350px; background-color: #f9f9f9; display: flex; align-items: center; justify-content: center; color: #666; font-size: 1.5rem; position: relative; overflow: hidden; }
+        .card-image img { max-width: 70%; max-height: 70%; object-fit: contain; }
+        .card-image:hover { cursor: pointer; opacity: 0.95; }
+        .preview-badge { position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.6); color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; }
+        
+        .card-content { flex: 1; min-width: 300px; padding: 40px; }
+        .card-content span { display: inline-block; margin-bottom: 10px; }
+        
+        .card-content h2 { color: #FF9800; font-size: 2rem; margin-bottom: 15px; margin-top: 10px; }
+        .card-content p { font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 25px; }
+        
+        .btn-buy { display: inline-block; background-color: #FF9800; color: white; padding: 15px 35px; border-radius: 30px; font-weight: bold; transition: 0.3s; cursor: pointer; }
+        .btn-buy:hover { background-color: #F57C00; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255,152,0,0.4); }
+        
+        /* 自定義顏色按鈕的 hover 效果 */
+        .btn-buy[style*="background-color: #4a90e2"]:hover { background-color: #357ABD !important; box-shadow: 0 5px 15px rgba(74,144,226,0.4) !important; }
+        .btn-buy[style*="background-color: #F1C40F"]:hover { background-color: #D4AC0D !important; box-shadow: 0 5px 15px rgba(241,196,15,0.4) !important; }
 
-        /* --- Hero 區塊 (主視覺) --- */
-        .hero { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); padding: 60px 5%; text-align: center; }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 20px; }
-        .hero p { font-size: 1.2rem; color: #666; margin-bottom: 30px; }
-        .cta-button { background-color: #00B900; color: white; padding: 15px 40px; border-radius: 50px; font-size: 1.2rem; font-weight: bold; transition: transform 0.2s; display: inline-block; }
-        .cta-button:hover { transform: scale(1.05); background-color: #009900; }
-
-        /* --- 關於我們 (AI 策略展示) --- */
-        .about { padding: 50px 10%; background-color: #fff; text-align: center; }
-        .tag { background-color: #eee; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; color: #555; display: inline-block; margin-bottom: 15px; }
-
-        /* --- 貼圖展示區 --- */
-        .gallery { padding: 50px 10%; background-color: #fafafa; }
-        .gallery h2 { text-align: center; margin-bottom: 40px; }
-        .sticker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; text-align: center; }
-        .sticker-item { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .sticker-placeholder { width: 100%; height: 120px; background-color: #ddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #888; }
-
-        /* --- 數據成果展示 (給教授看的) --- */
-        .stats { padding: 40px 10%; background-color: #333; color: white; display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; }
-        .stat-box { margin: 20px; }
-        .stat-number { font-size: 2.5rem; font-weight: bold; color: #00B900; }
-        .stat-label { font-size: 1rem; opacity: 0.8; }
+        /* --- IG 客服說明區 --- */
+        .ai-tech { background-color: #fff; padding: 50px 10%; text-align: center; border-top: 5px solid #FF9800; }
+        .ai-tech p { font-size: 1.1rem; color: #666; margin: 20px 0 30px 0; line-height: 1.8; }
+        .btn-ig { display: inline-block; background: #FF9800; color: white; padding: 18px 40px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; transition: 0.3s; box-shadow: 0 5px 15px rgba(255,152,0,0.3); }
+        .btn-ig:hover { background-color: #F57C00; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255,152,0,0.4); }
+        .tech-box { border: 2px dashed #ccc; padding: 30px; margin-top: 20px; border-radius: 10px; }
 
         /* --- 頁尾 --- */
-        footer { background-color: #222; color: #888; text-align: center; padding: 40px 10%; font-size: 0.9rem; }
-        
-        /* --- 手機版調整 --- */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .stats { flex-direction: column; }
-        }
-    </style>
-</head><!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YZ879MRVTN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+        footer { background: #333; color: #888; text-align: center; padding: 30px; margin-top: 50px; }
 
-  gtag('config', 'G-YZ879MRVTN');
-</script>
+        /* --- 預覽彈窗 --- */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); }
+        .modal-content { position: relative; margin: auto; padding: 0; width: 90%; max-width: 800px; top: 50%; transform: translateY(-50%); }
+        .modal-content img { width: 100%; height: auto; border-radius: 10px; }
+        .close-modal { position: absolute; top: -40px; right: 0; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; }
+        .close-modal:hover { color: #FF9800; }
+        .modal-title { color: #fff; text-align: center; font-size: 1.5rem; margin-bottom: 20px; }
+
+    </style>
+</head>
 <body>
 
-    <header>
-        <div class="logo">MySticker AI</div>
-        <nav>
-            <a href="#about">關於</a>
-            <a href="#gallery">貼圖預覽</a>
-            <a href="#contact">聯絡</a>
-        </nav>
+    <nav>
+        <div class="logo">GenSticker</div>
+        <div>
+            <a href="https://www.instagram.com/你的IG帳號/" 
+               target="_blank" 
+               class="ig-icon"
+               onclick="trackIGClick()">
+               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+               </svg>
+               <span>Instagram</span>
+            </a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>讓聊天變得更有趣的超萌貼圖！✨</h1>
+        <p>拯救空氣突然安靜！不管是上班討拍還是朋友聚會，用萌力征服全場！🎉</p>
     </header>
 
-    <section class="hero">
-        <h1>用 AI 創造的<br>超療癒對話體驗</h1>
-        <p>結合 Midjourney 圖像生成與 ChatGPT 文案策略<br>為你的聊天室注入 100% 的幽默感。</p>
-        <a href="https://store.line.me/" target="_blank" class="cta-button">前往 Line Store 購買</a>
-    </section>
-
-    <section class="stats">
-        <div class="stat-box">
-            <div class="stat-number">1,205</div>
-            <div class="stat-label">網站瀏覽量 (PV)</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-number">108</div>
-            <div class="stat-label">社群粉絲數</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-number">98%</div>
-            <div class="stat-label">好評回饋</div>
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <span class="tag">AI Generated Content</span>
-        <h2>為什麼選擇我們？</h2>
-        <p>這不只是一組貼圖，這是一個大學生團隊利用 Generative AI 進行的電商實驗。<br>每一張圖都經過 50+ 次的指令調教，確保角色的靈魂與一致性。</p>
-    </section>
-
-    <section id="gallery" class="gallery">
-        <h2>貼圖預覽</h2>
-        <div class="sticker-grid">
-            <div class="sticker-item">
-                <div class="sticker-placeholder">貼圖圖片1</div>
-                <p>早安你好</p>
-            </div>
-            <div class="sticker-item">
-                <div class="sticker-placeholder">貼圖圖片2</div>
-                <p>不想上班</p>
-            </div>
-            <div class="sticker-item">
-                <div class="sticker-placeholder">貼圖圖片3</div>
-                <p>歸剛欸</p>
-            </div>
-            <div class="sticker-item">
-                <div class="sticker-placeholder">貼圖圖片4</div>
-                <p>吃土了</p>
+    <section class="sticker-section" data-section="sticker-gallery">
+        <div class="sticker-card" style="border-left: 10px solid #89CFF0;">
+            <div class="card-image" style="background-color: #E0F7FA;" onclick="openPreview('Q版薩摩耶', 'one-preview.png', event)" data-sticker-name="Q版薩摩耶">
+                <img src="one.png" alt="Q版薩摩耶貼圖">
+                <span class="preview-badge" style="background: #4a90e2; box-shadow: 0 2px 8px rgba(74,144,226,0.4);">🔍預覽</span>
+            </div> 
+            <div class="card-content">
+                <span style="background:#89CFF0; color:white; padding:3px 10px; border-radius:10px; font-size:0.8rem;">熱銷推薦</span>
+                <h2 style="color: #4a90e2;">Q版薩摩耶 - 可愛日常反應</h2>
+                <p>療癒系 Q 版薩摩耶，用最簡單的表情，表達最真實的心情。</p>
+                <a href="https://line.me/S/sticker/32314042/?lang=zh-Hant&utm_source=gnsh_stickerDetail" 
+                   target="_blank" 
+                   class="btn-buy" 
+                   style="background-color: #4a90e2;"
+                   onclick="trackLineStickerClick('Q版薩摩耶')">前往 Line Store 購買</a>
             </div>
         </div>
+
+        <div class="sticker-card" style="border-left: 10px solid #F4D03F; flex-direction: row-reverse;">
+            <div class="card-image" style="background-color: #FEF9E7;" onclick="openPreview('草帽女孩的夏日物語', 'two-preview.png', event)" data-sticker-name="草帽女孩的夏日物語">
+                <img src="two.png" alt="草帽女孩的夏日物語">
+                <span class="preview-badge" style="background: #F1C40F; box-shadow: 0 2px 8px rgba(241,196,15,0.4);">🔍預覽</span>
+            </div>
+            <div class="card-content">
+                <h2 style="color: #D4AC0D;">草帽女孩的夏日物語</h2>
+                <p>擁有金黃色雙眸的她，就像夏日的陽光一樣溫暖！無論是開心、難過還是生氣，她豐富的表情都能完美傳達你的心情。</p>
+                <a href="貼圖連結B" 
+                   target="_blank" 
+                   class="btn-buy" 
+                   style="background-color: #F1C40F;"
+                   onclick="trackLineStickerClick('草帽女孩的夏日物語')">前往 Line Store 購買</a>
+            </div>
+        </div>
+
+        <div class="sticker-card">
+            <div class="card-image" onclick="openPreview('監修中', 'three-preview.png', event)" data-sticker-name="大學生的日常">
+                <img src="three.png" alt="監修中">
+                <span class="preview-badge" style="background: #FF9800; box-shadow: 0 2px 8px rgba(255,152,0,0.4);">🔍預覽</span>
+            </div>
+            <div class="card-content">
+                <h2>監修中</h2>
+                <p>...</p>
+                <a href="貼圖連結C" 
+                   target="_blank" 
+                   class="btn-buy" 
+                   onclick="trackLineStickerClick('監修中')">前往 Line Store 購買</a>
+            </div>
+        </div>
     </section>
 
-    <footer id="contact">
-        <p>&copy; 2025 電商期末專案小組. All rights reserved.</p>
-        <p>Powered by AI Technology</p>
+    <section class="ai-tech" data-section="ig-contact">
+        <h2>💬 有問題嗎？來 IG 找我們聊聊！</h2>
+        <p>想了解更多貼圖資訊？有任何疑問或建議？<br>歡迎追蹤我們的 Instagram，私訊小編為你服務！</p>
+        <a href="https://www.instagram.com/你的IG帳號/" 
+           target="_blank" 
+           class="btn-ig" 
+           onclick="trackIGClick()"
+           style="display: inline-flex; align-items: center; gap: 10px;">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; fill: currentColor;">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            <span>前往 Instagram</span>
+        </a>
+    </section>
+
+    <footer data-section="footer">
+        <p>© 2024 GenSticker | 貼圖宣傳頁 | Powered by AI Technology ✨</p>
     </footer>
 
-</body>
+    <!-- 預覽彈窗 -->
+    <div id="previewModal" class="modal" onclick="closePreview()">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePreview()">&times;</span>
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <img id="modalImage" src="" alt="貼圖預覽">
+        </div>
+    </div>
+
+    <script>
+        // ===== 事件追蹤系統 =====
+        
+        // 通用事件發送函數（可整合 GA4 或其他分析工具）
+        function trackEvent(eventName, eventParams = {}) {
+            console.log('📊 Event Tracked:', eventName, eventParams);
+            
+            // 如果你使用 Google Analytics 4，可以這樣發送事件：
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, eventParams);
+            }
+            
+            // 如果使用 Facebook Pixel：
+            if (typeof fbq !== 'undefined') {
+                fbq('trackCustom', eventName, eventParams);
+            }
+            
+            // 如果使用其他追蹤工具，在此添加相應代碼
+        }
+
+        // 1. 追蹤「前往 LINE 商店」按鈕點擊
+        function trackLineStickerClick(stickerName) {
+            trackEvent('click_line_sticker', {
+                sticker_name: stickerName,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        // 追蹤「前往 Instagram」按鈕點擊
+        function trackIGClick() {
+            trackEvent('click_ig_contact', {
+                source: 'contact_section',
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        // 2. 追蹤貼圖預覽點擊
+        function openPreview(stickerName, imageSrc, event) {
+            // 防止點擊事件冒泡
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            // 發送預覽事件
+            trackEvent('click_sticker_preview', {
+                sticker_name: stickerName,
+                timestamp: new Date().toISOString()
+            });
+            
+            // 顯示預覽彈窗
+            const modal = document.getElementById('previewModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            modalTitle.textContent = stickerName + ' - 貼圖預覽';
+            modalImage.src = imageSrc;
+            modal.style.display = 'block';
+            
+            // 圖片載入失敗時的處理
+            modalImage.onerror = function() {
+                console.error('❌ 圖片載入失敗:', imageSrc);
+                alert('預覽圖片載入失敗，請確認圖片檔案存在：' + imageSrc);
+                closePreview();
+            };
+        }
+
+        // 關閉預覽彈窗
+        function closePreview() {
+            const modal = document.getElementById('previewModal');
+            modal.style.display = 'none';
+        }
+
+        // 3. 追蹤滑動到指定區塊（使用 Intersection Observer）
+        function setupScrollTracking() {
+            const sections = document.querySelectorAll('[data-section]');
+            const trackedSections = new Set(); // 記錄已追蹤的區塊，避免重複發送
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionName = entry.target.getAttribute('data-section');
+                        
+                        // 只在第一次進入視窗時追蹤
+                        if (!trackedSections.has(sectionName)) {
+                            trackEvent('scroll_to_section', {
+                                section_name: sectionName,
+                                timestamp: new Date().toISOString()
+                            });
+                            trackedSections.add(sectionName);
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.5 // 當區塊 50% 進入視窗時觸發
+            });
+
+            sections.forEach(section => observer.observe(section));
+        }
+
+        // 頁面載入完成後初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            setupScrollTracking();
+            console.log('✅ 事件追蹤系統已初始化');
+        });
+
+        // 防止彈窗內部點擊時關閉
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalContent = document.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+    </script>
+
+    </body>
 </html>
-
-
